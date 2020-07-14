@@ -1,60 +1,235 @@
-# :package_description
+#PHP Wrapper for the gooラボ Japanese Analysis API
+Just a simple and compact PHP Wrapper for the [gooラボ Japanese Morphological Analysis API](https://labs.goo.ne.jp/api/jp/morphological-analysis/).
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/:package_name.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/:package_name/run-tests?label=tests)](https://github.com/spatie/:package_name/actions?query=workflow%3Arun-tests+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/:package_name.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
-
-**Note:** Replace ```:author_name``` ```:author_username``` ```:author_email``` ```:package_name``` ```:package_description``` with their correct values in [README.md](README.md), [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](CONTRIBUTING.md), [LICENSE.md](LICENSE.md) and [composer.json](composer.json) files, then delete this line.
-
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-Learn how to create a package like this one, by watching our premium video course:
-
-[![Laravel Package training](https://spatie.be/github/package-training.jpg)](https://laravelpackage.training)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
+##Documentation
+You can find gooラボ's documentation (in japanese) on https://labs.goo.ne.jp/api/jp/morphological-analysis/
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require spatie/:package_name
+composer require mntbllr/goolab-php
 ```
 
 ## Usage
 
+### Morphological Analysis
+
+```php
+$goo = new Mntbllr\GooLab\GooLab('YOUR_APP_ID');
+$goo->morphology($sentence,$info_filter,$pos_filter,$translate_pos);
+```
+
+To run a full sentence breakdown, which is probably the case, you can pass just the `$sentence` argument:
+
 ``` php
-$skeleton = new Spatie\Skeleton();
-echo $skeleton->echoPhrase('Hello, Spatie!');
+$goo = new Mntbllr\GooLab\GooLab('YOUR_APP_ID');
+$goo->morphology('PHPはすごく面白いですね');
+
+/*
+array (
+    0 =>
+        array (
+            0 => 'PHP',
+            1 => 'noun',
+            2 => 'ピーエイチピー',
+        ),
+    1 =>
+        array (
+            0 => 'は',
+            1 => 'continuous particle',
+            2 => 'ハ',
+        ),
+    2 =>
+        array (
+            0 => 'すごく',
+            1 => 'conjunction',
+            2 => 'スゴク',
+        ),
+    3 =>
+        array (
+            0 => '面白',
+            1 => 'adjective stem',
+            2 => 'オモシロ',
+        ),
+    4 =>
+        array (
+            0 => 'いです',
+            1 => 'adjective suffix',
+            2 => 'イデス',
+        ),
+    5 =>
+        array (
+            0 => 'ね',
+            1 => 'ending particle',
+            2 => 'ネ',
+        ),
+)
+*/
 ```
 
-## Testing
+### Options
 
-``` bash
-composer test
+`$info_filter`: array that filters the type of information linguistic information to be returned from the API:
+
+| value  | description  |
+|---|---|
+| form  | The breakdown of separated words only |
+| pos  | The part of speech break down (noun, particle...) |
+| read  | The pronunciation breakdown by word in katakana |  
+
+Example:
+``` php
+$goo = new Mntbllr\GooLab\GooLab('YOUR_APP_ID');
+$goo->morphology('PHPはすごく面白いですね',['form','read']);
+
+/*
+array (
+    0 =>
+        array (
+            0 => 'PHP',
+            2 => 'ピーエイチピー',
+        ),
+    1 =>
+        array (
+            0 => 'は',
+            2 => 'ハ',
+        ),
+    2 =>
+        array (
+            0 => 'すごく',
+            2 => 'スゴク',
+        ),
+    3 =>
+        array (
+            0 => '面白',
+            2 => 'オモシロ',
+        ),
+    4 =>
+        array (
+            0 => 'いです',
+            2 => 'イデス',
+        ),
+    5 =>
+        array (
+            0 => 'ね',
+            2 => 'ネ',
+        ),
+)
+*/
 ```
 
-## Changelog
+Omitting this parameter will give a full sentence breakdown using all the options above.
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+`$pos_filter`: array that filters the sentence breakdown by part of speech:
+(If you set the `$translate_pos` to `false` follow [this link](https://labs.goo.ne.jp/api/jp/morphological-analysis-pos_filter/) to check the list of parts of speech in japanese)
 
-## Contributing
+| value  |
+|---|
+| adjective suffix |
+| verb conjugative suffix |
+| adjective stem |
+| noun suffix |
+| independent word |
+| connection suffix |
+| english suffix |
+| verb suffix |
+| verb stem |
+| quote particle |
+| continuous particle |
+| auxiliary noun |
+| adjective prefix |
+| auxiliary number |
+| ending particle |
+| adverb |
+| conjunction |
+| independent word |
+| adjective |
+| discriminant |
+| verb prefix |
+| adnominal |
+| pronoun |
+| interjection |
+| case particle |
+| prefix number |
+| counter suffix |
+| particle |
+| verb |
+| noun |
+| brackets |
+| punctuation |
+| comma |
+| blank |
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Example:
+``` php
+$goo = new Mntbllr\GooLab\GooLab('YOUR_APP_ID');
+$goo->morphology('PHPはすごく面白いですね',['form','read'],['noun','adjective stem']);
+
+/*
+array (
+    0 =>
+        array (
+            0 => 'PHP',
+            1 => 'noun',
+            2 => 'ピーエイチピー',
+        ),
+    1 =>
+        array (
+            0 => '面白',
+            1 => 'adjective stem',
+            2 => 'オモシロ',
+        ),
+    )
+)
+*/
+```
+
+Omitting this parameter will give a full sentence breakdown using all the options above.
+
+`$translate_pos`: pass `false` to use the japanese names of part of speech in your api call and response. Translates them to english if omitted or `true`.
+
+Example:
+``` php
+$goo = new Mntbllr\GooLab\GooLab('YOUR_APP_ID');
+$goo->morphology('PHPはすごく面白いですね',['form','read'],['noun','adjective stem'],false);
+
+/*
+array (
+    0 =>
+        array (
+            0 => 'PHP',
+            1 => '名詞',
+            2 => 'ピーエイチピー',
+        ),
+    1 =>
+        array (
+            0 => '面白',
+            1 => '形容詞語幹',
+            2 => 'オモシロ',
+        ),
+    )
+)
+*/
+```
+
+## Converting strings to hiragana or katakana
+You can use the methods `toHiragana()` and `toKatakana()` to convert sentences or words accordingly.
+
+Example:
+``` php
+$goo = new Mntbllr\GooLab\GooLab('YOUR_APP_ID');
+$sentence = 'PHPはすごく面白いですね';
+echo $goo->toHiragana($sentence);
+//ぴーえいちぴーは すごく おもしろいですね
+
+echo $goo->toKatakana($sentence);
+//ピーエイチピーハ スゴク オモシロイデスネ
+```
 
 ## Security
 
 If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
-
-## Credits
-
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](../../contributors)
 
 ## License
 

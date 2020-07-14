@@ -1,36 +1,32 @@
 {
-    "name": ":vendor_name/:package_name",
-    "description": ":package_description",
+    "name": "mntbllr/goolab-php",
+    "description": "gooラボ Japanese Analasys API PHP Wrapper",
     "keywords": [
-        ":vendor_name",
-        ":package_name"
+        "mntbllr",
+        "goolab-php"
     ],
-    "homepage": "https://github.com/spatie/:package_name",
+    "homepage": "https://github.com/mntbllr/gooLab-php",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": "https://spatie.be",
+            "name": "Bruno Montibeller",
+            "email": "bruno.e.montibeller@gmail.com",
+            "homepage": "https://mntbllr.dev",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^7.4"
+        "php": "^7.4",
+        "guzzlehttp/guzzle": "^6.3",
+        "ext-json": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
-        "phpunit/phpunit": "^9.0",
-        "vimeo/psalm": "^3.11"
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "Mntbllr\\GooLab\\": "src"
         }
     },
     "scripts": {
