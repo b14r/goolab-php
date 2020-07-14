@@ -1,7 +1,7 @@
 #PHP Wrapper for the gooラボ Japanese Analysis API
 Just a simple and compact PHP Wrapper for the [gooラボ Japanese Morphological Analysis API](https://labs.goo.ne.jp/api/jp/morphological-analysis/).
 
-##Documentation
+## Documentation
 You can find gooラボ's documentation (in japanese) on https://labs.goo.ne.jp/api/jp/morphological-analysis/
 ## Installation
 
